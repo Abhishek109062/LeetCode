@@ -1,13 +1,17 @@
 class Solution {
     public int[] decompressRLElist(int[] nums) {
-        List<Integer> obj=new ArrayList<>();
-        for(int x=0;x<nums.length;x+=2)
-        {
-            int ln=nums[x];
-            while(ln--!=0)
-                obj.add(nums[x+1]);
+        int arrSize = 0;
+        for (int i = 0; i < nums.length; i += 2) {
+            arrSize += nums[i];
         }
         
-        return obj.stream().mapToInt(i ->i).toArray();
+        int[] result = new int[arrSize];
+
+        int startIdx = 0;
+        for (int i = 0; i < nums.length; i += 2) {
+            Arrays.fill(result, startIdx, startIdx + nums[i], nums[i + 1]);
+            startIdx += nums[i];
+        }
+        return result;
     }
 }
