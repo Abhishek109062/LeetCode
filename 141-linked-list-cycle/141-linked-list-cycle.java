@@ -10,15 +10,18 @@
  * }
  */
 public class Solution {
-   public boolean hasCycle(ListNode head) {
-    if(head==null) return false;
-    ListNode walker = head;
-    ListNode runner = head;
-    while(runner.next!=null && runner.next.next!=null) {
-        walker = walker.next;
-        runner = runner.next.next;
-        if(walker==runner) return true;
+    public boolean hasCycle(ListNode head) {
+        if(head==null)
+            return false;
+        ListNode obj1=head;
+        ListNode obj2=head;
+        while(obj2.next!=null && obj2.next.next!=null)
+        {
+            obj1=obj1.next;
+            obj2=obj2.next.next;
+            if(obj1==obj2)
+                return true;
+        }
+        return false;
     }
-    return false;
-}
 }
