@@ -18,9 +18,9 @@ class Solution {
         if(board[x][y]!=ch[i])
             return false;
         
-        board[x][y]^=256;
+        board[x][y]^=56;
         boolean exist=exist(board,ch,x+1,y,i+1) || exist(board,ch,x-1,y,i+1) || exist(board,ch,x,y+1,i+1) || exist(board,ch,x,y-1,i+1);
-        board[x][y]^=256;
+        board[x][y]^=56;
         return exist;
     }
 }
