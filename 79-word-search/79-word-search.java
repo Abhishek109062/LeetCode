@@ -1,26 +1,58 @@
 class Solution {
     public boolean exist(char[][] board, String word) {
-        char[] ch=word.toCharArray();
-        for(int x=0;x<board.length;x++){
-            for(int y=0;y<board[0].length;y++){
-               if(exist(board,ch,x,y,0))
-                   return true;
-            }
+        
+        int m = board.length;
+        int n = board[0].length;
+        
+        int[] wordCharFreq = new int['z'-'A'+1]; 
+        int[] boardCharFreq = new int['z'-'A'+1];
+        
+        for(char c : word.toCharArray())
+            wordCharFreq[c - 'A']++;
+        
+        for(int r = 0; r < m; r++)
+            for(int c = 0; c < n; c++)
+                boardCharFreq[board[r][c] - 'A']++;
+        
+        for(char c : word.toCharArray())
+            if(boardCharFreq[c - 'A'] < wordCharFreq[c - 'A'])
+                return false;
+        
+        if(boardCharFreq[word.charAt(0) - 'A'] > boardCharFreq[word.charAt(word.length()-1) - 'A']){
+            char [] ca = new char[word.length()];
+            for(int i = 0, j = word.length()-1; j >= 0; j--, i++)
+                ca[i] = word.charAt(j);
+            word = new String(ca);
         }
+            
+        for(int r = 0; r < m; r++)
+            for(int c = 0; c < n; c++)
+                if(backtrack(board, m, n, r, c, word, 0))
+                    return true;
+        
         return false;
     }
     
-    public boolean exist(char[][] board,char[] ch,int x,int y,int i){
-        if(i==ch.length)
+    private boolean backtrack(char[][] board, int m, int n, int r, int c, String word, int charIndx){
+        
+        if(word.length() == charIndx)
             return true;
-        if(x<0 || y<0 || x==board.length || y==board[0].length)
-            return false;
-        if(board[x][y]!=ch[i])
+        
+        if(r < 0 || r >= m || c < 0 || c >= n)
             return false;
         
-        board[x][y]^=56;
-        boolean exist=exist(board,ch,x+1,y,i+1) || exist(board,ch,x-1,y,i+1) || exist(board,ch,x,y+1,i+1) || exist(board,ch,x,y-1,i+1);
-        board[x][y]^=56;
-        return exist;
+        if(board[r][c] != word.charAt(charIndx))
+            return false;
+        
+        board[r][c] = '@'; 
+        
+        if(backtrack(board, m, n, r, c+1, word, charIndx+1)
+          || backtrack(board, m, n, r, c-1, word, charIndx+1)
+          || backtrack(board, m, n, r+1, c, word, charIndx+1)
+          || backtrack(board, m, n, r-1, c, word, charIndx+1))
+            return true;
+        
+        board[r][c] = word.charAt(charIndx); 
+        return false;
     }
 }
