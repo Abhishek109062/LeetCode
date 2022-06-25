@@ -21,22 +21,22 @@ class GFG {
 
 
 class Solution {
-    public static ArrayList<Integer> duplicates(int arr[], int n) {
-        Arrays.sort(arr);
-        ArrayList<Integer> obj=new ArrayList<>();
-               int temp=0;
-	           for(int x=0;x<n-1;x++){
-	               if(arr[x]==arr[x+1])
-	               temp++;
-	               else if(temp>0){
-	                   obj.add(arr[x]);        
-	                   temp=0;
-	               }
-	           }
-	           if(temp>0)
-	           obj.add(arr[n-1]);
-	           if(obj.isEmpty())
-	           obj.add(-1);
-	       return obj;         
-    }
+   public static ArrayList<Integer> duplicates(int arr[], int n) {
+       // code here
+       Arrays.sort(arr);
+       HashSet<Integer> h = new HashSet<Integer>();
+       for(int i=0;i<n-1;i++)
+       {
+           if(arr[i]==arr[i+1])
+              h.add(arr[i]);
+       }
+       ArrayList<Integer> l = new ArrayList<Integer>(h);
+       Collections.sort(l);
+       if(l.size()==0)
+       {
+           l.add(-1);
+           return l;
+       }
+       return l;
+   }
 }
