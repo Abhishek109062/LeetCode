@@ -1,17 +1,16 @@
 class Solution {
     public List<String> fizzBuzz(int n) {
-        List<String> ans=new ArrayList<>();
-        for(int x=1;x<=n;x++){
-            if(x%15==0){
-                ans.add("FizzBuzz");
-            }
-            else if(x%3==0)
-                ans.add("Fizz");
-            else if(x%5==0)
-                ans.add("Buzz");
+          List<String> list = new ArrayList<>();
+        for (int i = 1; i <= n; i++) {
+            if (i % 3 == 0 && i % 5 != 0)
+                list.add("Fizz");
+            else if (i % 5 == 0 && i % 3 != 0)
+                list.add("Buzz");
+            else if (i % 3 == 0 && i % 5 == 0)
+                list.add("FizzBuzz");
             else
-                ans.add(""+x);
+                list.add(String.valueOf(i));
         }
-        return ans;
+        return list; 
     }
 }
