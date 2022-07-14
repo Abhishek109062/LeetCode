@@ -1,41 +1,45 @@
 class Solution {
     public List<Integer> findAnagrams(String s, String p) {
-        List<Integer> list = new ArrayList<Integer>();
-        if(p.length() > s.length()) return  list; // Base Condition
-       
-            int N=s.length(); // Array1 of s
-            int M=p.length(); // Array2 of p
-            int[]count = freq(p); // intialize only 1 time
-            
-            int[]currentCount = freq(s.substring(0, M)); // freq function, update every-time according to sliding window
-            
-            if(areSame(count,currentCount)) // areSame function
-                list.add(0);
-        
-            int i;
-            for(i=M;i<N;i++){ // going from 3 to 9 in above example
-                currentCount[s.charAt(i-M) - 'a']--; // blue pointer, decrement frequency
-                currentCount[s.charAt(i)-'a']++; // red pointer, increment frequency
-                if(areSame(count,currentCount)){ // now check, both array are same
-                    list.add(i-M+1); // if we find similar add their index in our list
+        List<Integer> result = new ArrayList<>();
+        int[] tmp = new int[26];
+        int[] now = new int[26];
+        int start = 0;
+        int last = 0;
+        for(int i=0; i<p.length(); i++){
+            tmp[p.charAt(i)-'a']++;
+        }
+        for(int i=0;i<s.length(); i++){
+            int idx = s.charAt(i)-'a';
+            now[idx]++;
+            if(now[idx] == tmp[idx]){
+                boolean check = true;
+                for(int j=0; j<26; j++){
+                    if(now[j] != tmp[j]){
+                        check = false;
+                        break;
+                    }
+                }
+                if(check){
+                    result.add(start);
+                }
+            }else if(now[idx]>tmp[idx]){
+                while(now[idx]!=tmp[idx]){
+                    now[s.charAt(start++)-'a']--;
+                }
+                boolean check = true;
+                for(int j=0; j<26; j++){
+                    if(now[j] != tmp[j]){
+                        check = false;
+                        break;
+                    }
+                }
+                if(check){
+                    result.add(start);
                 }
             }
-        return list;
-    }
-    private boolean areSame(int[] x, int[] y){
-        for(int i = 0; i < 26; i++){
-            if(x[i] != y[i]) // compare all the frequency & doesnn't find any di-similar frequency return true otherwise false
-                return false;
         }
         
-        return true;
-    }
-  private int[] freq(String s){
-        int[] count = new int[26]; // create array of size 26
-        for(int i = 0; i < s.length(); i++){
-            count[s.charAt(i) - 'a']++; // update acc. to it's frequency
-        }
         
-        return count; // and return count 
+        return result;
     }
 }
