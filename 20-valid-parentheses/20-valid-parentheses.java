@@ -1,17 +1,20 @@
 class Solution {
     public boolean isValid(String s) {
-	Stack<Character> stack = new Stack<Character>();
-	for (char c : s.toCharArray()) {
-		if (c == '(')
-			stack.push(')');
-		else if (c == '{')
-			stack.push('}');
-		else if (c == '[')
-			stack.push(']');
-		else if (stack.isEmpty() || stack.pop() != c)
-			return false;
-	}
-	return stack.isEmpty();
-}
- 
+        ArrayDeque<Character> obj=new ArrayDeque<>();
+        for(int x=0;x<s.length();x++){
+            char ch=s.charAt(x);
+            if(ch=='(' || ch=='{' || ch=='[')
+                obj.push(ch);
+            else{
+                if(obj.isEmpty())
+                    return false;
+                
+                else if((obj.peek()=='(' && ch!=')') || (obj.peek()=='{' && ch!='}') || (obj.peek()=='[' && ch!=']'))
+                    return false;
+                else 
+                    obj.pop();
+            }
+        }
+        return obj.isEmpty();
+    }
 }
