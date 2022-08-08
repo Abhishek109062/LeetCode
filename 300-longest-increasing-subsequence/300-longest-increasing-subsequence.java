@@ -10,7 +10,6 @@ class Solution {
             dp[i] = x;
             if(i == len) len++;
         }
-
-        return len;
+      return len;
     }
 }
