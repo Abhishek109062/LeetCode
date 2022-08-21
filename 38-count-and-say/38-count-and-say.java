@@ -1,32 +1,21 @@
 class Solution {
-    
     public String countAndSay(int n) {
-        String ans="1";    
-            for(int x=1;x<n;x++){
-                ans=find(ans);
-            }
-        return ans;
-    }
-    
-    public String find(String s){
-        String temp="";
-        int count=1;
-        char ch=s.charAt(0);
-        for(int x=1;x<s.length();x++){
-            if(s.charAt(x)==ch)
-                count++;
-            else{
-                temp+=count;
-                temp+=ch;
-                count=1;
-                ch=s.charAt(x);
+        if(n==1){
+            return "1";
+        }
+        
+        String s = countAndSay(n-1);
+        
+        StringBuilder res = new StringBuilder();
+        int counter = 0;
+        
+        for(int i=0; i<s.length(); i++){
+            counter++;
+            if(i==s.length()-1 || s.charAt(i)!=s.charAt(i+1)){
+                res.append(counter).append(s.charAt(i));
+                counter = 0;
             }
         }
-            temp+=count;
-            temp+=ch;
-        
-        
-        return temp;
+        return res.toString();
     }
-    
 }
