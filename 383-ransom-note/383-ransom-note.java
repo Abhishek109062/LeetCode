@@ -1,14 +1,12 @@
 class Solution {
     public boolean canConstruct(String ransomNote, String magazine) {
-        //return magazine.contains(ransomNote);
-        int arr[]=new int[26];
-        for(int x=0;x<magazine.length();x++)
-            arr[magazine.charAt(x)-'a']++;
-            
-        for(int x=0;x<ransomNote.length();x++){
-            if(--arr[ransomNote.charAt(x)-'a']<0)
+		int[] nextIndexToStartLooking = new int[26];
+        for (char curr : ransomNote.toCharArray()) {
+            int index = magazine.indexOf(curr, nextIndexToStartLooking[curr - 97]);
+            if (index == -1)
                 return false;
+            nextIndexToStartLooking[curr - 97] = ++index;
         }
-        return true;
+        return true;   
     }
 }
