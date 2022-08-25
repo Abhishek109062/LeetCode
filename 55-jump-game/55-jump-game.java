@@ -5,6 +5,6 @@ class Solution {
             if(x+nums[x]>=last)
                 last=x;
         }
-        return last<=0;
+        return last==0;
     }
 }
