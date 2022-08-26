@@ -1,13 +1,22 @@
 class Solution {
     public boolean reorderedPowerOf2(int n) {
-        char ch[]=String.valueOf(n).toCharArray();
-        Arrays.sort(ch);
-        for(int x=0;x<32;x++){
-            char temp[]=String.valueOf((int)Math.pow(2,x)).toCharArray();
-            Arrays.sort(temp);
-            if(Arrays.equals(ch,temp))
+        int[] countN = count(n);
+        int num =1;
+        for(int i =0; i <31  ; i++){
+            if(Arrays.equals(countN, count(num))){
                 return true;
+            }
+            num =num<<1;
         }
         return false;
+    }
+    int[] count(int n){
+        int[] arr = new int[10];
+        while(n>0){
+            arr[n%10]++;
+            n /=10;
+            
+        }
+        return arr;
     }
 }
