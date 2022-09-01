@@ -1,20 +1,25 @@
 class Solution {
-    List<String> ans=new ArrayList<>();
     public List<String> letterCombinations(String digits) {
-        if(digits.length()==0)
-            return new ArrayList<>();
-        String[] phn={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
-        comb(digits,0,digits.length(),"",phn);
+        List<String> ans = new ArrayList<String>();
+        if(digits.length() == 0) return ans;
+        String[] mappings = {"","","abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        StringBuilder sb = new StringBuilder();
+        genPossibilities(digits, mappings, ans, 0, sb);  
         return ans;
     }
-    public void comb(String digits,int index,int len,String temp,String[] phn){
-        if(len==index){
-            ans.add(temp);
+    
+    public void genPossibilities(String digits, String[] mappings, List<String> ans,
+                           int idx, StringBuilder stringInProgress) {
+        if(idx == digits.length()) {
+            ans.add(stringInProgress.toString());
             return;
         }
-        int cur=(int)(digits.charAt(index)-'0');
-        for(int x=0;x<phn[cur].length();x++){
-            comb(digits,index+1,len,temp+phn[cur].charAt(x),phn);
+        char ch = digits.charAt(idx);
+        String letters = mappings[ch - '0'];
+        for(char letter : letters.toCharArray()) {
+            stringInProgress.append(letter);
+            genPossibilities(digits, mappings, ans, idx + 1, stringInProgress);
+            stringInProgress.deleteCharAt(stringInProgress.length() - 1);
         }
     }
 }
