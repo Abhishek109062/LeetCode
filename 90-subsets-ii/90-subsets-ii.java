@@ -6,26 +6,15 @@ class Solution {
         return ans;
     }
     public void sub(int[] nums,int i,int len,List<List<Integer>> ans, List<Integer> temp){
-        boolean flag=ans.contains(temp);
-        if(i==len){
-            if(!flag){
             ans.add(new ArrayList<>(temp));
-            return;
-            }
-            else
-                return;
+        
+        int x;
+        for( x=i;x<len;x++){
+            if(x!=i && nums[x]==nums[x-1])
+                continue;
+            temp.add(nums[x]);
+            sub(nums,x+1,len,ans,temp);
+            temp.remove(temp.size()-1);
         }
-        
-        // if(i>0 && nums[i-1]==nums[i]){
-        //     sub(nums,i+1,len,ans,new ArrayList<>(temp));
-        //     //sub(nums,i+1,len,ans,new ArrayList<>(temp));
-        // }
-        // else{
-           sub(nums,i+1,len,ans,new ArrayList<>(temp));
-            temp.add(nums[i]);
-            sub(nums,i+1,len,ans,new ArrayList<>(temp));
-            
-        //}
-        
     }
 }
