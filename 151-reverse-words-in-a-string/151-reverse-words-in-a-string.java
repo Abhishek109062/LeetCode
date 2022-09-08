@@ -3,12 +3,16 @@ class Solution {
         s=s.trim();
         
         s=s.replaceAll(" +"," ");
-        String ans="";
+        StringBuilder ans=new StringBuilder();
         String ar[]=s.split(" ");
-        s="";
-        for(int x=ar.length-1;x>=0;x--)
-            s+=ar[x]+" ";
         
-        return s.substring(0,s.length()-1);
+        
+        for(int x=ar.length-1;x>=1;x--)
+        {
+             ans.append(ar[x]+" ");
+            
+        }
+        ans.append(ar[0]);
+        return ans.toString();
     }
 }
