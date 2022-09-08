@@ -1,26 +1,35 @@
 class Solution {
+    String[] tokens;
+    int endIndex;
     public int evalRPN(String[] tokens) {
-        Stack temp=new Stack();
-        for(int x = 0; x < tokens.length ;x++){
-            String s=tokens[x];
-            if(s.equals("+") || s.equals("-") || s.equals("/") || s.equals("*")){
-                int second=(int)temp.pop(); 
-                int first=(int)temp.pop();
-                int ans = 0;
-                if(s.equals("+"))
-                    ans = first + second;
-                else if(s.equals("*"))
-                    ans = first * second;
-                else if(s.equals("-"))
-                    ans = first - second;
-                else
-                    ans = first / second;
-                
-                temp.push(ans);
+        this.tokens = tokens;
+        endIndex = tokens.length - 1;
+        return solve();
+    }
+    
+    private int solve() {
+        while(endIndex >= 0) {
+            String s = tokens[endIndex--];
+            if(s.equals("*")) {
+                int sol = solve() * solve();
+                return sol;
+            } else if(s.equals("/")) {
+                int right = solve();
+                int left = solve();
+                int sol = left / right;
+                return sol;
+            } else if(s.equals("+")) {
+                int sol = solve() + solve();
+                return sol;
+            } else if(s.equals("-")) {
+                int right = solve();
+                int left = solve();
+                int sol = left - right;
+                return sol;
+            } else {
+                return Integer.valueOf(s);
             }
-            else 
-                temp.push(Integer.parseInt(tokens[x]));
         }
-        return (int)temp.pop();
+        return -1;
     }
 }
