@@ -4,7 +4,7 @@ class Solution {
         
         s=s.replaceAll(" +"," ");
         StringBuilder ans=new StringBuilder();
-        String ar[]=s.split(" +");
+        String ar[]=s.split(" ");
         
         
         for(int x=ar.length-1;x>=1;x--)
