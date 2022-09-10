@@ -1,54 +1,59 @@
-public class Solution {
-        int len = 0;
-        public List<List<Integer>> fourSum(int[] nums, int target) {
-            len = nums.length;
-            Arrays.sort(nums);
-            return kSum(nums, target, 4, 0);
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        int n = nums.length;
+        Arrays.sort(nums);
+        List<List<Integer>> ans = new ArrayList<>();
+        if (nums == null || n < 4) {
+            return ans;
         }
-       private ArrayList<List<Integer>> kSum(int[] nums, long target, int k, int index) {
-            ArrayList<List<Integer>> res = new ArrayList<List<Integer>>();
-            if(index >= len) {
-                return res;
+        
+        for(int i = 0; i < n-3; i++) {
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
             }
-            if(k == 2) {
-            	int i = index, j = len - 1;
-            	while(i < j) {
-                    //find a pair
-            	    if(target - nums[i] == nums[j]) {
-            	    	List<Integer> temp = new ArrayList<>();
-                    	temp.add(nums[i]);
-                    	temp.add((int)(target-nums[i]));
-                        res.add(temp);
-                        //skip duplication
-                        while(i<j && nums[i]==nums[i+1]) i++;
-                        while(i<j && nums[j-1]==nums[j]) j--;
-                        i++;
-                        j--;
-                    //move left bound
-            	    } else if (target - nums[i] > nums[j]) {
-            	        i++;
-                    //move right bound
-            	    } else {
-            	        j--;
-            	    }
-            	}
-            } else{
-                for (int i = index; i < len - k + 1; i++) {
-                    //use current number to reduce ksum into k-1sum
-                    ArrayList<List<Integer>> temp = kSum(nums, target - nums[i], k-1, i+1);
-                    if(temp != null){
-                        //add previous results
-                        for (List<Integer> t : temp) {
-                            t.add(0, nums[i]);
+            if ((long)nums[i] + nums[i+1] + nums[i+2] + nums[i+3] > target) {
+                break;
+            }
+            
+            if ((long) nums[i] + nums[n-3] + nums[n-2] + nums[n-1] < target) {
+                continue;
+            }
+
+            for(int j = i+1; j < n-2; j++) {
+                if (j > i+1 && nums[j] == nums[j-1]) {
+                    continue;
+                }
+                if ((long)nums[i] + nums[j] + nums[j+1] + nums[j+2] > target) {
+                    break;
+                }
+            
+                if ((long) nums[i] + nums[j] + nums[n-2] + nums[n-1] < target) {
+                    continue;
+                }
+                int l = j+1;
+                int r = n-1;
+                while(l < r) {
+                    long sum = (long)nums[i] + nums[j] + nums[l] + nums[r];
+                    if (sum == target) {
+                        ans.add(Arrays.asList(nums[i], nums[j], nums[l], nums[r]));
+                        while(l < r && nums[l] == nums[l+1]) {
+                            l++;
                         }
-                        res.addAll(temp);
-                    }
-                    while (i < len-1 && nums[i] == nums[i+1]) {
-                        //skip duplicated numbers
-                        i++;
+                        l++;
+                        while(l < r && nums[r] == nums[r-1]) {
+                            r--;
+                        }
+                        r--;
+                    } else if (sum < target) {
+                        l++;
+                    } else {
+                        r--;
                     }
                 }
+
             }
-            return res;
         }
+        return ans;
     }
+    
+}
