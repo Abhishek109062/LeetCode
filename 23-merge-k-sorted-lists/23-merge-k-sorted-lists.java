@@ -1,32 +1,33 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        PriorityQueue<Integer> temp = new PriorityQueue<>();
-        for(ListNode x : lists){
-            while(x != null){
-                temp.add(x.val);
-                x = x.next;
-            }
-        }
-        //System.out.println(temp);
-        ListNode dummy = new ListNode();
-        ListNode temp2 = dummy;
-        while(!temp.isEmpty()){
-            ListNode temp3 = new ListNode(temp.poll());
-            temp2.next=temp3;
-            temp2=temp3;
-            
-        }
-        return dummy.next;
+        return mergeKLists(lists, 0, lists.length - 1);
+    }
+    
+    public ListNode mergeKLists(ListNode[] lists, int left, int right) {
+        if (left > right) return null;
+        if (left == right) return lists[left];
+        int mid = left + (right - left) / 2; 
+        ListNode leftN = mergeKLists(lists, left, mid);
+        ListNode rightN = mergeKLists(lists, mid + 1, right);
         
+        
+        ListNode newHead = new ListNode(-1);
+        ListNode cur = newHead;
+        
+        while(leftN != null && rightN != null) {
+            if(leftN.val <= rightN.val) {
+                cur.next = leftN;
+                leftN = leftN.next;
+            } else {
+                cur.next = rightN;
+                rightN = rightN.next;
+            }
+            
+            cur = cur.next;
+        }
+        
+        if (leftN == null) cur.next = rightN;
+        else if (rightN == null) cur.next = leftN;
+        return newHead.next;
     }
 }
