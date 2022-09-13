@@ -12,13 +12,13 @@ class Solution {
             }
         }
         //System.out.println(ans);
-        
-        StringBuilder ss = new StringBuilder(s);
-        while(!ans.isEmpty())
-            ss.setCharAt(ans.pop(),'!');
-            
-            
-        return ss.toString().replaceAll("\\!","");
-        
+        while(!ans.isEmpty()){
+            int temp = ans.pop();
+            if(temp == s.length()-1)
+                s = s.substring(0,temp);
+            else
+                s = s.substring(0,temp) + s.substring(temp+1);
+        }
+        return s;       
     }
 }
