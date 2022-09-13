@@ -21,7 +21,7 @@ class Solution {
                     return false;
             }
             else{
-                if( !(binary.charAt(0) == '1' && binary.charAt(1) == '0'))
+                if( binary.charAt(0) != '1' || binary.charAt(1) != '0')
                     return false;
                 }
                 
