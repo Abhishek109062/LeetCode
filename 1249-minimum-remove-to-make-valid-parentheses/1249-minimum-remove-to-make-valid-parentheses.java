@@ -1,21 +1,38 @@
 class Solution {
-    public String minRemoveToMakeValid(String s) {
-        Stack<Integer> ans = new Stack();
-        
-        for(int x = 0; x < s.length(); x++){
-            char ch = s.charAt(x);
-            if(ch == ')' || ch == '('){
-            if(ch == ')' && ans.size() >= 1 && s.charAt(ans.peek()) == '(')
-                ans.pop();
-            else
-                ans.push(x);
+    public String minRemoveToMakeValid(String str) {
+    int n = str.length();
+    StringBuilder sb = new StringBuilder(n);
+    boolean[] remove = new boolean[n];
+    int open = 0;
+    for (int i = 0; i < n; i++) {
+        if (str.charAt(i) == '(') {
+            open++;
+        } else if (str.charAt(i) == ')') {
+            if (open > 0) {
+                open--;
+            } else {
+                remove[i] = true;
             }
         }
-        //System.out.println(ans);
-        StringBuilder ss = new StringBuilder(s);
-        while(!ans.isEmpty()){
-            ss.deleteCharAt(ans.pop());
-        }
-        return ss.toString();       
     }
+
+    int close = 0;
+    for (int i = n - 1; i >= 0; i--) {
+        if (str.charAt(i) == ')') {
+            close++;
+        } else if (str.charAt(i) == '(') {
+            if (close > 0) {
+                close--;
+            } else {
+                remove[i] = true;
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (!remove[i]) sb.append(str.charAt(i));
+    }
+
+    return sb.toString();
+}
 }
