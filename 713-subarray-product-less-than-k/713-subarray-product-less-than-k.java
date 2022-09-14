@@ -16,7 +16,7 @@ class Solution {
             }
             
             total += (j - i + 1) ;
-            j++;
+            j++; 
         }
         return total;
     }
