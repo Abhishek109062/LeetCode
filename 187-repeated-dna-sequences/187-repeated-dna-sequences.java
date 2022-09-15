@@ -1,19 +1,16 @@
 class Solution {
     public List<String> findRepeatedDnaSequences(String s) {
-        if(s.length() < 10)
+      if(s.length()>10000) 
             return new ArrayList<>();
-        HashMap<String,Integer> ans = new HashMap<>();
-        
-        for(int x = 9; x < s.length() ; x++){
-            String temp = s.substring(x-9,x+1);
-            ans.put(temp,ans.getOrDefault(temp,0)+1);
+    Set seen = new HashSet(), repeated = new HashSet();
+    for (int i = 0; i + 9 < s.length(); i++) {
+        String ten = s.substring(i, i + 10);
+        if (seen.contains(ten)) {
+            repeated.add(ten);
+        } else {
+            seen.add(ten);
         }
-        List<String> result = new ArrayList<>();
-        for(String str : ans.keySet()){
-            if(ans.get(str)>1)
-                result.add(str);
-        }
-        
-        return result;
     }
+    return new ArrayList(repeated);
+}
 }
