@@ -1,11 +1,18 @@
 class Solution {
     public int maximumScore(int[] nums, int[] multipliers) {
-        int[] dp = new int[nums.length + 1];
-        for (int m = multipliers.length - 1, delta = nums.length - multipliers.length; m >= 0; m--, delta++) {
-            for (int i = 0; i < nums.length - delta; i++) {
-                dp[i] = Math.max(dp[i] + multipliers[m] * nums[i + delta], dp[i + 1] + multipliers[m] * nums[i]);
+        int n = nums.length;
+        int m = multipliers.length;
+        int[][] dp = new int[m + 1][m + 1];
+        
+        for (int i = m - 1; i >= 0; i--) {
+            for (int left = i; left >= 0; left--) {
+                int mult = multipliers[i];
+                int right = n - 1 - (i - left);
+                dp[i][left] = Math.max(mult * nums[left] + dp[i + 1][left + 1], 
+                                       mult * nums[right] + dp[i + 1][left]);
             }
         }
-        return dp[0];
+        
+        return dp[0][0];
     }
 }
