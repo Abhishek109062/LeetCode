@@ -1,0 +1,1 @@
+**we just have to keep 1 from a group of consecutive same color and the one left will the one having max time**
