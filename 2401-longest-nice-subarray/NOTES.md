@@ -1,0 +1,2 @@
+Longest subarray is possible is of length 30 **as 10^9 is represented in 30 bits and in bext caseis that every no in subtring has only one 1 so that  there and is always 0 .**
+*10^9 binary = 111011100110101100101000000000*
