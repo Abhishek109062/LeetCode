@@ -1,31 +1,20 @@
 class Solution {
     public int compareVersion(String version1, String version2) {
-        String[] ver1 = version1.split("\\.");
-        String[] ver2 = version2.split("\\.");
+        int n = version1.length(), m = version2.length();
         int i = 0, j = 0;
-        //System.out.println(ver2.length);
-        while(i < ver1.length && j < ver2.length){
-            if(Integer.parseInt(ver1[i]) > Integer.parseInt(ver2[j]))
-                return 1;
-            
-            if(Integer.parseInt(ver1[i]) < Integer.parseInt(ver2[j]))
-                return -1;
-            i++;
-            j++;
+        while(i < n || j < m){
+            int x = 0;
+            for(; i < n && version1.charAt(i) != '.'; ++ i){
+                x = x * 10 + version1.charAt(i) - '0';
+            }
+            ++ i;
+            int y = 0;
+            for(; j < m && version2.charAt(j) != '.'; ++ j){
+                y = y * 10 + version2.charAt(j) - '0';
+            }
+            ++ j;
+            if(x != y) return x > y ? 1 : -1;
         }
-        
-        while(i < ver1.length){
-            if(Integer.parseInt(ver1[i]) > 0)
-                return 1;
-            i++;
-        }
-        
-        while(j < ver2.length){
-            if(Integer.parseInt(ver2[j]) > 0)
-                return -1;
-            j++;
-        }
-        
         return 0;
     }
 }
