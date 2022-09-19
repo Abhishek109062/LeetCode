@@ -1,27 +1,29 @@
 class Solution {
     public List<List<String>> findDuplicate(String[] paths) {
-        List<List<String>> ans = new ArrayList<>();
-        if(paths.length == 0)
-            return ans;
-        
-        Map<String , Set<String>> temp = new HashMap<>();
-        for(String part : paths){
-            String temp1[] = part.split(" +");
-            for(int x = 1; x < temp1.length; x++){
-                int index = temp1[x].indexOf("(");
-                String con = temp1[x].substring(index);
-                String fileAdd = temp1[0] + "/" + temp1[x].substring(0,index);
-                Set<String> filead = temp.getOrDefault(con,new HashSet<>());
-                filead.add(fileAdd);
-                temp.put(con,filead);
+        Map<String, List<String>> map = new HashMap<>();
+        List<List<String>> res = new ArrayList<>();
+        for(int i = 0; i < paths.length; i++){
+            String s = paths[i];
+            String[] str = s.split(" ");
+            String prefix = str[0] + "/";
+            for(int j = 1; j < str.length; j++){
+                String nc = str[j];
+                int t = nc.length() - 1;
+                while(t >= 0 && nc.charAt(t) != '(') t--;
+                String name = nc.substring(0, t);
+                String content = nc.substring(t + 1, nc.length() - 1);
+                map.computeIfAbsent(content, a -> new ArrayList<>());
+                map.get(content).add(prefix + name);
             }
         }
-        for(String s:temp.keySet()){
-            if(temp.get(s).size() > 1)
-                ans.add(new ArrayList<>(temp.get(s)));
+        
+        for(String key: map.keySet()){
+            if(map.get(key).size() > 1){
+                res.add(map.get(key));
+            }
         }
         
+        return(res);
         
-        return ans;    
     }
 }
