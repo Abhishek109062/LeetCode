@@ -14,7 +14,7 @@ class Solution {
         for(int i=0;i<n;i++){
             int length = words[i].length();
             
-            if(length ==1){
+            if(length == 1){
                 if(wordMap.containsKey("")){
                     ans.add(Arrays.asList(i, wordMap.get("")));
                     ans.add(Arrays.asList(wordMap.get(""), i));
