@@ -4,28 +4,27 @@ class Solution {
             return false;
         
         int count[] = new int[26];
-        for(int x = 0; x < s1.length(); x++){
-            count[s1.charAt(x) - 'a']++;
-            count[s2.charAt(x) - 'a']--;
-        }
+        char ch[] = s2.toCharArray();
+        for(char c : s1.toCharArray())
+            count[c - 'a']++;
         
-        if(possible(count))
-            return true;
         
-        for(int x = s1.length(); x < s2.length(); x++){
-            count[s2.charAt(x) - 'a']--;
-            count[s2.charAt(x-s1.length()) - 'a']++;
-            if(possible(count))
-                return true;
+        int right = 0;
+        int left = 0;
+        int len = s1.length();
+        int window = s1.length();
+        while(right < s2.length()){
+            if(count[ ch[right++] - 'a']-- > 0)
+                window--;
+            
+            while(window == 0){
+                if(right - left == len)
+                    return true;
+                
+                if(count[ ch[left++] - 'a']++ == 0)
+                    window++;
+            }
         }
         return false;
-    }
-    
-    public boolean possible(int[] count){
-        for(int x = 0; x < 26; x++)
-            if(count[x] != 0)
-                return false;
-        
-        return true;
     }
 }
