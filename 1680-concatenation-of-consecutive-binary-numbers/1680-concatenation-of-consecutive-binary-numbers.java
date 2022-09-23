@@ -1,23 +1,14 @@
 class Solution {
     public int concatenatedBinary(int n) {
-        long MOD = 1000_000_007;
-
-        StringBuilder sb = new StringBuilder();
-        int length = 0;
-        long sum = 0;
-        for (int i=1; i<=n; i++) {
-            if ((i & i-1) == 0) {
-                length++;
-            }
-
-            sum <<= length;
-            sum += i;
-
-            if (sum > MOD) {
-                sum %= MOD;
-            }
+        long ans = 1L;
+        int mod = 1000000007;
+        for(int x = 2; x <= n; x++){
+            ans = ((ans << log2(x)) + x) % mod;
         }
-
-        return (int)(sum % MOD);        
+        return (int)ans;
+    }
+    
+    public int log2(int n){
+        return (int)(Math.log10(n) / Math.log10(2) + 1);
     }
 }
