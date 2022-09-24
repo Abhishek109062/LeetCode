@@ -1,27 +1,38 @@
 class Solution {
-    public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer , Integer> temp = new HashMap<>();
-        for(int x = 0; x < nums.length; x++){
-            temp.put(nums[x],temp.getOrDefault(nums[x],0)+1);
+ public int[] topKFrequent(int[] nums, int k) {
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+        
+        for (int i : nums) {
+            if (min > i) min = i;
+            if(i > max) max = i;
         }
         
-        List<Integer>[] mostK = new List[nums.length + 1];
+        int[] freq = new int[max - min + 1];
+        for (int i : nums) 
+            freq[i - min]++;
         
-        for(int x : temp.keySet()){
-            int freq = temp.get(x);
-            if(mostK[freq] == null)
-                mostK[freq] = new ArrayList<>();
-            
-            mostK[freq].add(x);
-        }
-        int[] result = new int[k];
-        for(int x = mostK.length -1; x >= 0; x--){
-            if(mostK[x] != null){
-                for(int y = 0; y < mostK[x].size() && k > 0; y++)
-                    result[--k] = mostK[x].get(y);       
+        List<Integer>[] buckets = new List[nums.length + 1];
+              
+        int max_freq = 0;
+        for (int i = 0; i < freq.length; i++) {
+            if (freq[i] > 0) {
+                if (buckets[freq[i]] == null) 
+                    buckets[freq[i]] = new ArrayList<>();
+                buckets[freq[i]].add(i + min);
+                
+                max_freq = Math.max(freq[i], max_freq);
             }
         }
         
-        return result;
+        int[] res = new int[k];
+        for (int i = max_freq, idx = 0; i > 0 && idx < k; i--)
+            if (buckets[i] != null)
+                for (int num : buckets[i]) {
+                    if (idx == k) break;
+                    res[idx++] = num;
+                }
+        return res;
     }
+
 }
