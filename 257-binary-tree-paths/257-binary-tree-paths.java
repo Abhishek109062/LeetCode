@@ -19,22 +19,24 @@ class Solution {
         ans = new ArrayList<>();
         if(root == null)
             return ans;
-        paths(root,"");
+        paths(root,new StringBuilder());
         return ans;
     }
-    public void paths(TreeNode root, String str){
+    public void paths(TreeNode root, StringBuilder str){
         if(root == null)
             return;
         if(root.left == null && root.right == null){
-            str = str+root.val;
-            ans.add(str);
+            str.append(root.val);
+            // str.append("->");
+            ans.add(str.toString());
             return;
         }
         // if(root.right == null || root.left == null)
         //     return;
         
-        str = str+root.val+"->";
-        paths(root.left, str);
-        paths(root.right,str);
+        str.append(root.val);
+        str.append("->");
+        paths(root.left,new StringBuilder(str));
+        paths(root.right,new StringBuilder(str));
     }
 }
