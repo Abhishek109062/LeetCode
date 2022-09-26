@@ -26,8 +26,8 @@ class Solution {
         if(root == null)
             return;
         if(root.left == null && root.right == null){
-            str = str+root.val+"->";
-            ans.add(str.substring(0,str.length()-2));
+            str = str+root.val;
+            ans.add(str);
             return;
         }
         // if(root.right == null || root.left == null)
