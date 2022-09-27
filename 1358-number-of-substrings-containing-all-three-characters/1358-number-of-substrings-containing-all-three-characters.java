@@ -1,6 +1,6 @@
 class Solution {
     public int numberOfSubstrings(String s) {
-        int alpha[] = {0,0,0};
+        int alpha[] = new int[3];
         int result = 0;
         int i = 0;
         int len = s.length();
