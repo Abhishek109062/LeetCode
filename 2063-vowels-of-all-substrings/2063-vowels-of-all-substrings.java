@@ -1,12 +1,23 @@
 class Solution {
-    public long countVowels(String s) {
-        long count = 0L, len = s.length();
-        for(int x = 0; x < len; x++){
-            if("aeiou".indexOf(s.charAt(x)) >= 0){
-                count += (x+1)*(len-x);
-            }
-        }
+    public long countVowels(String word) {
+        int l = word.length();
+        char[] w = word.toCharArray();
+      
+        long res = 0;
         
-        return count;
+        for(int k=0 ; k<l; k++){
+            if(isVowel(w[k])){
+                long right = l-k;
+                long left = k+1;
+                res += left * right;
+                // System.out.println(w[k] + "  " + left*right);
+            } 
+        }
+        return res;
+    }
+    
+    public boolean isVowel(char c){
+        if(c=='a' || c=='e' || c=='i' || c=='o' || c=='u') return true;
+        return false;
     }
 }
