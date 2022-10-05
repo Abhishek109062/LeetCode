@@ -1,49 +1,29 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
-    public TreeNode addOneRow(TreeNode root, int val, int depth) {
-        if(depth == 1){
-            TreeNode newroot = new TreeNode(val);
-            newroot.left = root;
-            return newroot;
-        }
-        update(root, val, depth);
-        return root;
-        
+    public TreeNode addOneRow(TreeNode root, int val, int depth) {     
+        return solveItForMe(root,val,depth,1);
     }
-    
-    public void update(TreeNode root, int val, int depth){
-        if(root == null)
-            return;
-        if(depth == 2){
-            TreeNode templeft = root.left;
-            TreeNode tempright = root.right;
-            TreeNode new1 = new TreeNode(val);
-            TreeNode new2 = new TreeNode(val);
-            
-            new1.left = root.left;
-            new2.right = root.right;
-            
-            root.left = new1;
-            root.right = new2;
-            
-            return;
+
+    private TreeNode solveItForMe(TreeNode root, int val, int depth, int level){
+        if (root == null) 
+        return null;
+        if (depth == 1){                            
+            TreeNode newNode = new TreeNode(val);
+            newNode.left =root;
+            return newNode;         
         }
-        
-        update(root.left, val, depth-1);
-        update(root.right, val, depth-1);
+        if (level == depth-1){  
+			TreeNode newNode = new TreeNode(val);
+            newNode.left = root.left;
+            root.left = newNode;
+
+			newNode = new TreeNode(val);
+            newNode.right = root.right;
+            root.right = newNode;
+        }
+        else{
+            solveItForMe(root.left,val,depth,level+1);  
+            solveItForMe(root.right,val,depth,level+1);  
+        }
+        return root;
     }
 }
