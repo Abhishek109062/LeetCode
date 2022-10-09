@@ -1,33 +1,49 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public boolean findTarget(TreeNode root, int k) {
-        ArrayList<Integer> temp = new ArrayList<>();
-        return find(root, temp, k);
+
+       return fun(root,root,k);
+        
+        
     }
     
-    public boolean find(TreeNode root,List<Integer> temp, int k){
-        if(root == null)
+    boolean fun(TreeNode root,TreeNode p, int k){
+        
+        if(p==null)
+            return false;
+
+          boolean v =   search(root,p,k-p.val);
+            if(v)
+                return true;
+        
+          v = fun(root,p.left,k);
+            if(v)
+                return true;
+
+            v = fun(root,p.right,k);
+            if(v)
+                return true;
+ 
+        return false;
+    }
+    
+    boolean search(TreeNode root,TreeNode p,int k){
+        
+        if(root==null)
             return false;
         
-        if(temp.contains(k-root.val))
-            return true;
+        TreeNode c = root; boolean h=  false;
+        while(c!=null&&h!=true){
+            if(c.val==k&&p!=c){
+                h=  true;
+                return true;
+            }
+            else if(k<c.val)
+                c = c.left;
+            else
+                c = c.right;
+        }
         
-        temp.add(root.val);
-        
-        return (find(root.left, temp, k) || find(root.right, temp, k));
+       return false; 
     }
 }
+    
