@@ -1,26 +1,19 @@
 class Solution {
-    public int findMinDifference(List<String> timePoints) {
-        int n = timePoints.size();
-        if (n > 24 * 60) return 0;
-        
-        int[] mins = new int[n];
+    public int findMinDifference(List<String> timepoints) {
+        int len = timepoints.size();
+        int[] time = new int[len];
         int i = 0;
-        for (String tm : timePoints) {
-            mins[i++] = getMin(tm);
-        }
-        Arrays.sort(mins);
+        int max = 24*60;
+        for(String s : timepoints)
+            time[i++] = Integer.parseInt(s.substring(0,2))*60 + Integer.parseInt(s.substring(3));
         
-        int res = mins[0] + 24 * 60 - mins[n - 1];  // donot forget this
-        for (int j = 1; j < n; j++) {
-            res = Math.min(res, mins[j] - mins[j - 1]);
+        Arrays.sort(time);
+        int min = max + time[0] - time[len-1];
+        for(int x = 0; x < len-1; x++){
+            int temp = Math.min((time[x+1] - time[x]), max+time[x]-time[x+1]);
+            min = Math.min(min, temp);
         }
-        return res;
-    }
-    
-    private int getMin(String time) {
-        int h = (time.charAt(0) -'0') * 10 + time.charAt(1) - '0';
-        int m = (time.charAt(3) -'0') * 10 + time.charAt(4) - '0';
         
-        return h * 60 + m;
+        return min;
     }
 }
