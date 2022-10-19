@@ -1,20 +1,19 @@
-public class Solution {
+class Solution {
     public int[] intersection(int[] nums1, int[] nums2) {
-        Set<Integer> set = new HashSet<>();
-        Set<Integer> intersect = new HashSet<>();
-        for (int i = 0; i < nums1.length; i++) {
-            set.add(nums1[i]);
-        }
-        for (int i = 0; i < nums2.length; i++) {
-            if (set.contains(nums2[i])) {
-                intersect.add(nums2[i]);
+
+        boolean[] bool = new boolean[1001];
+
+        int[] res = new int[Math.max(nums1.length, nums2.length)];
+
+        for (int i : nums1) bool[i] = true;
+
+        int c = 0;
+        for (int i : nums2) {
+            if (bool[i] == true) {
+                res[c++] = i;
+                bool[i] = false;
             }
         }
-        int[] result = new int[intersect.size()];
-        int i = 0;
-        for (Integer num : intersect) {
-            result[i++] = num;
-        }
-        return result;
+        return Arrays.copyOf(res, c);
     }
 }
