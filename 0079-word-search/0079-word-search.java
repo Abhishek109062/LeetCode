@@ -6,8 +6,10 @@ class Solution {
         
         for(int r = 0; r < m; r++)
             for(int c = 0; c < n; c++)
-                if(backtrack(board, m, n, r, c, word, 0))
+                if(board[r][c] == word.charAt(0)){
+                    if(backtrack(board, m, n, r, c, word, 0))
                     return true;
+                }
         
         return false;
     }
