@@ -22,9 +22,6 @@ class Solution {
         if(r < 0 || r >= m || c < 0 || c >= n || board[r][c] != word.charAt(charIndx))
             return false;
         
-        if(board[r][c] != word.charAt(charIndx))
-            return false;
-        
         board[r][c] = '@'; 
         
         if(backtrack(board, m, n, r, c+1, word, charIndx+1)
