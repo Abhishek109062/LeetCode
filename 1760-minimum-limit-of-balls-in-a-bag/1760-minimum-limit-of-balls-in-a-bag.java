@@ -1,15 +1,22 @@
 class Solution {
-    public int minimumSize(int[] A, int k) {
-        int left = 1, right = 1_000_000_000;
-        while (left < right) {
-            int mid = (left + right) / 2, count = 0;
-            for (int a : A)
-                count += (a - 1) / mid;
-            if (count > k)
-                left = mid + 1;
+    public int minimumSize(int[] nums, int maxoper) {
+        int min = 1;
+        int max = 1000000000;
+        
+        int count = 0;
+        while(min < max){
+            int mid = (min+max)/2;
+            for(int x : nums)
+                count += (x-1)/mid;
+            
+            if(count > maxoper)
+                min = mid+1;
             else
-                right = mid;
+                max = mid;
+            
+            count = 0;
         }
-        return left;
+        
+        return min;
     }
 }
