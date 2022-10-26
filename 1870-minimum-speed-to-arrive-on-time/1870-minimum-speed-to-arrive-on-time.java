@@ -1,23 +1,23 @@
 class Solution {
     public int minSpeedOnTime(int[] dist, double hour) {
-        int left = 0, right = 1000000000;
-        
-        int ans = -1;
-        while(left <= right){
-            int mid = (left + right) / 2;
-            double sum = 0.0;    
-            for(int x = 0; x < dist.length-1; x++)
-                sum += Math.ceil((double)dist[x] / mid);
-            
-            sum += (double)dist[dist.length - 1] / mid;
-            
-            if(sum <= hour){
-                ans = mid;
-                right = mid - 1;
+        if (dist.length - 1 >= hour) return -1;
+        int low = 1, high = Arrays.stream(dist).max().getAsInt() * 100;
+        while (low < high) {
+            int mid = low + (high - low) / 2;
+            if (timeNeeded(dist, mid) <= hour) {
+                high = mid;
+            } else {
+                low = mid + 1;
             }
-            else
-                left = mid + 1;
         }
-        return ans;
+        return low;
+    }
+    
+    private double timeNeeded(int[] dist, int speed) {
+        int ans = 0;
+        for (int i = 0; i < dist.length - 1; i++) {
+            ans += (dist[i] - 1) / speed + 1;
+        }
+        return ans + (double)(dist[dist.length - 1]) / speed;
     }
 }
