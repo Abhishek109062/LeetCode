@@ -1,31 +1,48 @@
 class Solution {
+    int n;
     public int largestOverlap(int[][] img1, int[][] img2) {
-        int len = img1.length;
-        List<int[]> lista = new ArrayList<>(), listb = new ArrayList<>();
+        n = img1.length;        
+        int ans = 0;
         
+        int N = img1.length;
+    int[][] count = new int[2 * N + 1][2 * N + 1];
+    for (int i = 0; i < N; i++) {
+      for (int j = 0; j < N; j++) {
+        if (img1[i][j] == 1) {
+          for (int i2 = 0; i2 < N; i2++) {
+            for (int j2 = 0; j2 < N; j2++) {
+              if (img2[i2][j2] == 1) {
+                count[i-i2+N][j-j2+N] += 1;
+              }
+            }
+          }
+        }
+      }
+    }
+    //int ans = 0;
+    for (int[] row: count) {
+      for (int v: row) {
+        ans = Math.max(ans, v);
+      }
+    }
+    
         
-        for(int x = 0; x < len; x++){
-            for(int y = 0; y < len; y++)
-            {
-                if(img1[x][y] == 1)
-                    lista.add(new int[]{x,y});
-                
-                if(img2[x][y] == 1)
-                    listb.add(new int[]{x,y});
+        //for(int i = 0; i < n; i++) { //row shift
+        //    for(int j = 0; j < n; j++) {  //col shift
+        //        ans = Math.max(ans, count(img1, img2, i, j));
+        //        ans = Math.max(ans, count(img2, img1, i, j));
+        //    }
+        //}
+        return ans;
+    }    
+    int count(int[][] img1, int[][] img2, int r, int c) {        
+        int over1 = 0, over2 = 0;        
+        for(int i = r; i < n; i++) {
+            for(int j = c; j < n; j++) {
+                over1 += img1[i-r][j-c] & img2[i][j]; //right 
+                over2 += img1[i-r][j] & img2[i][j-c]; //left 
             }
         }
-        Map<String, Integer> ans = new HashMap<>();
-        for(int[] x : lista){
-            for(int[] y : listb){
-                String s = (x[0] - y[0]) + " " + (x[1] - y[1]);
-                ans.put(s, ans.getOrDefault(s, 0) + 1);
-            }
-        }
-        
-        int res = 0;
-        for(int x : ans.values()){
-            res = res > x ? res : x;
-        }
-        return res;
+        return Math.max(over1, over2);
     }
 }
