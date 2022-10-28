@@ -1,24 +1,32 @@
 class Solution {
     public boolean validPalindrome(String s) {
-        int i = 0, j = s.length() - 1;
+        if (s == null || s.length() == 0) {
+            return true;
+        }
         
-        while(i <= j){
-            if(s.charAt(i) != s.charAt(j)){
-                return palin(s, i+1, j) || palin(s, i, j-1);    
+        int left = 0;
+        int right = s.length() - 1;
+        
+        while(left < right) {
+            if (s.charAt(left) != s.charAt(right)) {
+                return helper(s, left + 1, right) || helper(s, left, right - 1);
             }
-            i++;
-            j--;
+            left++;
+            right--;
         }
         return true;
     }
     
-    public boolean palin(String s, int i, int j){
-        while(i <= j){
-            if(s.charAt(i) != s.charAt(j))
+    private boolean helper(String str, int start, int end) {
+        int left = start;
+        int right = end;
+        
+        while(left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
                 return false;
-            
-            i++;
-            j--;
+            }
+            left++;
+            right--;
         }
         return true;
     }
