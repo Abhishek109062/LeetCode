@@ -9,17 +9,14 @@ class Solution {
             if(ch >= '0' && ch <= '9')
                 num = num * 10 + (ch - '0');
             
-            if(!(ch >= '0' && ch <= '9') && ch != ' ' || x == s.length() - 1){
+            if(ch < '0' && ch != ' ' || x == s.length() - 1){
                 if(sign == '+')
                     temp.push(num);
-                
-                if(sign == '-')
+                else if(sign == '-')
                     temp.push(-1*num);
-                
-                if(sign == '*')
+                else if(sign == '*')
                     temp.push(temp.pop() * num);
-                
-                if(sign == '/')
+                else
                     temp.push(temp.pop() / num);
                 
                 sign = ch;
