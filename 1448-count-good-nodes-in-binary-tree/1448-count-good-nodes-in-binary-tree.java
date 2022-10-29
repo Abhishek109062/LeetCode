@@ -15,16 +15,18 @@
  */
 class Solution {
     public int goodNodes(TreeNode root) {
-        return traverse(root,-10000);
+        return calcu(root, -10001);
     }
-    public int traverse(TreeNode root,int max){
-        if(root==null)
+    
+    public int calcu(TreeNode root, int max){
+        if(root == null)
             return 0;
         
-        int ans=root.val>=max?1:0;
+        int ans = root.val >= max ? 1 : 0;
         
-        ans+=traverse(root.left,Math.max(max,root.val));
-        ans+=traverse(root.right,Math.max(max,root.val));
+        ans += calcu(root.left, Math.max(max, root.val));
+        ans += calcu(root.right, Math.max(max, root.val));
+        
         return ans;
     }
 }
