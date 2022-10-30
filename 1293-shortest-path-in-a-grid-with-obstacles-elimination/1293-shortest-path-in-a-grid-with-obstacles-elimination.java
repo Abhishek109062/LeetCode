@@ -1,38 +1,33 @@
 class Solution {
-    int[][] dirs = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
+    private static int[] di = new int[] {0,  0, 1, -1};
+    private static int[] dj = new int[] {1, -1, 0,  0};
+    
+    record Cell (int i, int j, int steps, int k) {}
+
     public int shortestPath(int[][] grid, int k) {
-        int n = grid.length;
-        int m = grid[0].length;
-        Queue<int[]> q = new LinkedList();
-        boolean[][][] visited = new boolean[n][m][k+1];
-        visited[0][0][0] = true;
-        q.offer(new int[]{0,0,0});
-        int res = 0;
-        while(!q.isEmpty()){
-            int size = q.size();
-            for(int i=0; i<size; i++){
-                int[] info = q.poll();
-                int r = info[0], c = info[1], curK = info[2];
-                if(r==n-1 && c==m-1){
-                    return res;
-                }
-                for(int[] dir : dirs){
-                    int nextR = dir[0] + r;
-                    int nextC = dir[1] + c;
-                    int nextK = curK;
-                    if(nextR>=0 && nextR<n && nextC>=0 && nextC<m){
-                        if(grid[nextR][nextC]==1){
-                            nextK++;
-                        }
-                        if(nextK<=k && !visited[nextR][nextC][nextK]){
-                            visited[nextR][nextC][nextK] = true;
-                            q.offer(new int[]{nextR, nextC, nextK});
-                        }
-                    }
-                }                
+        int m = grid.length, n = grid[0].length, max = m + n - 2;
+        if (k > max - 2) return max;
+        int[][] visited = new int[m][n];
+        for (var a : visited) Arrays.fill(a, -1);
+        
+        Queue<Cell> q = new ArrayDeque<>();
+        Cell c0 = new Cell(0, 0, 0, k);
+        visited[0][0] = k;
+        q.offer(c0);
+        
+        while (!q.isEmpty()) {
+            Cell cur = q.poll();
+            if (cur.i == m-1 && cur.j == n-1) return cur.steps;
+            for (int i = 0; i < 4; i++) {
+                int i2 = cur.i + di[i], j2 = cur.j + dj[i];
+                if (i2 < 0 || j2 < 0 || i2 >= m || j2 >= n) continue;
+                int k2 = cur.k - grid[i2][j2];
+                if (k2 <= visited[i2][j2]) continue;
+                visited[i2][j2] = k2;
+                q.offer(new Cell(i2, j2, cur.steps+1, k2));
             }
-            res++;
         }
+        
         return -1;
     }
 }
