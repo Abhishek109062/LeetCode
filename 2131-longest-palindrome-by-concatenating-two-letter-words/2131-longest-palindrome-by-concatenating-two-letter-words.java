@@ -6,7 +6,7 @@ class Solution {
         HashMap<String, Integer> map = new HashMap<>();
         for(int x = 0; x < len; x++)
         {
-            String rev = new StringBuilder(words[x]).reverse().toString();
+            String rev = words[x].charAt(1) +""+ words[x].charAt(0);
             if(map.getOrDefault(rev, 0) > 0){
                 pairs++;
                 map.put(rev, map.get(rev) - 1);
