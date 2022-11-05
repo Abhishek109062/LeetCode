@@ -1,48 +1,105 @@
 class Solution {
-public List<String> findWords(char[][] board, String[] words) {
-    List<String> res = new ArrayList<>();
-    TrieNode root = buildTrie(words);
-    for (int i = 0; i < board.length; i++) {
-        for (int j = 0; j < board[0].length; j++) {
-            dfs (board, i, j, root, res);
+    
+    static class Trie {
+        static class Node {
+            String word;
+            Node[] children = new Node[26];
+            int childrenCount = 0;
+            
+            Node get(char c) {
+                return children[c - 'a'];
+            }
+            
+            void put(char c, Node n) {
+                children[c - 'a'] = n;
+                childrenCount++;
+            }
+            
+            void remove(char c) {
+                children[c - 'a'] = null;
+                childrenCount--;
+            }
+        }
+        
+        Node root = new Node();
+        
+        void add(String s) {
+            // System.out.println("trie.add " + s);
+            int len = s.length();
+            Node curr = root;
+            for (int i = 0; i < len; i++) {
+                char c = s.charAt(i);
+                Node child = curr.get(c);
+                if (child == null) {
+                    child = new Node();
+                    curr.put(c, child);
+                }
+                curr = child;
+            }
+            curr.word = s;
+        }
+        
+        boolean contains(CharSequence s) {
+            int len = s.length();
+            Node curr = root;
+            for (int i = 0; i < len; i++) {
+                char c = s.charAt(i);
+                Node child = curr.get(c);
+                if (child == null) return false;
+                curr = child;
+            }
+            return true;
         }
     }
-    return res;
-}
-
-public void dfs(char[][] board, int i, int j, TrieNode p, List<String> res) {
-    char c = board[i][j];
-    if (c == '#' || p.next[c - 'a'] == null) return;
-    p = p.next[c - 'a'];
-    if (p.word != null) {   // found one
-        res.add(p.word);
-        p.word = null;     // de-duplicate
+    
+    char[][] board;
+    boolean[][] visited;
+    Trie trie = new Trie();
+    Set<String> wordsOnBoard;
+    
+    public List<String> findWords(char[][] board, String[] words) {
+        wordsOnBoard = new HashSet<String>(words.length);
+        visited = new boolean[board.length][board[0].length];
+        this.board = board;
+        for (String word : words) {
+            trie.add(word);
+        }
+        findWordsOnBoard();
+        return List.copyOf(wordsOnBoard);
     }
-
-    board[i][j] = '#';
-    if (i > 0) dfs(board, i - 1, j ,p, res); 
-    if (j > 0) dfs(board, i, j - 1, p, res);
-    if (i < board.length - 1) dfs(board, i + 1, j, p, res); 
-    if (j < board[0].length - 1) dfs(board, i, j + 1, p, res); 
-    board[i][j] = c;
-}
-
-public TrieNode buildTrie(String[] words) {
-    TrieNode root = new TrieNode();
-    for (String w : words) {
-        TrieNode p = root;
-        for (char c : w.toCharArray()) {
-            int i = c - 'a';
-            if (p.next[i] == null) p.next[i] = new TrieNode();
-            p = p.next[i];
-       }
-       p.word = w;
+    
+    void findWordsOnBoard() {
+        int height = board.length;
+        int width = board[0].length;
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                findWordFrom(i, j, trie.root);
+            }
+        }
     }
-    return root;
-}
-
-class TrieNode {
-    TrieNode[] next = new TrieNode[26];
-    String word;
-}
+    
+    void findWordFrom(int i, int j, Trie.Node node) {
+        if (i < 0 || i >= board.length ||
+            j < 0 || j >= board[0].length ||
+            visited[i][j]
+        ) {
+            return;
+        }
+        char c = board[i][j];
+        var child = node.get(c);
+        if (child == null) return;
+        if (child.word != null) {
+            wordsOnBoard.add(child.word);
+            
+        }
+        visited[i][j] = true;
+        findWordFrom(i + 1, j, child);
+        findWordFrom(i - 1, j, child);
+        findWordFrom(i, j - 1, child);
+        findWordFrom(i, j + 1, child);
+        visited[i][j] = false;
+        if (child.childrenCount == 0) {
+            node.remove(c);
+        }
+    }
 }
