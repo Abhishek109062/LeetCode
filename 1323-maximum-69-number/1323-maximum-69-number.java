@@ -1,16 +1,20 @@
 class Solution {
     public int maximum69Number (int num) {
-        String s = "" + num;
-        // String ans;
-        for(int x = 0; x < s.length(); x++){
-            if(s.charAt(x) == '6'){
-                if(x == s.length() - 1)
-                    return Integer.parseInt(s.substring(0, x) + "9");
-                else
-                    return Integer.parseInt(s.substring(0, x) + "9" + s.substring(x+1));
-            }
-        }
+        int temp = num;
+        int first = -1;
         
-        return num;
+        for(int x = 0; temp > 0; x++){
+            if(temp % 10 == 6)
+                first = x;
+            
+            temp /= 10;
+        }
+        if(first == -1)
+            return num;
+        
+        temp = num /(int)Math.pow(10, first);
+        
+        return (temp+3) * (int)Math.pow(10, first) + num % (int)Math.pow(10, first);
+        
     }
 }
