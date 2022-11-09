@@ -1,12 +1,19 @@
 class Solution {
     public String shortestPalindrome(String s) {
-        int j = 0;
-    for (int i = s.length() - 1; i >= 0; i--) {
-        if (s.charAt(i) == s.charAt(j)) { j += 1; }
-    }
-    if (j == s.length()) { return s; }
-    String suffix = s.substring(j);
-    return new StringBuffer(suffix).reverse().toString() + shortestPalindrome(s.substring(0, j)) + suffix;
+        int ind = 0;
+        for(int x = s.length() - 1; x >= 0; x--)
+            if(s.charAt(x) == s.charAt(ind))
+                ind++;
+        
+        if(ind == s.length())
+            return s;
+        
+        String temp = s.substring(ind);
+        String rev = "";
+        for(int x = 0; x < temp.length(); x++)
+            rev = temp.charAt(x) + rev;
+        
+        return rev + shortestPalindrome(s.substring(0, ind)) + temp;
         
     }
 }
