@@ -1,27 +1,50 @@
+class Data{
+    public int[] point;
+    public int index;
+    public Data(int[] point, int index){
+        this.point = point;
+        this.index = index;
+    }
+}
 class Solution {
-    Map<Integer, Integer> f = new HashMap<>();
-    int islands = 0;
+    HashMap<Integer, List<Data>> adjListX = new HashMap<Integer, List<Data>>();
+    HashMap<Integer, List<Data>> adjListY = new HashMap<Integer, List<Data>>();
+    boolean[] visited ;
+    private void constructAdjList(int[][] stones){
+        for(int i = 0 ; i < stones.length;++i){
+                Data copy = new Data(stones[i],i);
+                adjListX.computeIfAbsent(stones[i][0],k -> new ArrayList<Data>()).add(copy);
+                adjListY.computeIfAbsent(stones[i][1],k -> new ArrayList<Data>()).add(copy);
+        }
+    }
+
+    public int dfs(int[] point,int hop){
+
+        for(Data data : adjListX.get(point[0])){
+            if(!visited[data.index]){
+                visited[data.index] = true;
+                hop = dfs(data.point,hop+1);
+            }
+        }
+        for(Data data : adjListY.get(point[1])){
+            if(!visited[data.index]){
+                visited[data.index] = true;
+                hop = dfs(data.point,hop+1);
+            }
+        }
+        return hop;
+    }
 
     public int removeStones(int[][] stones) {
-        for (int i = 0; i < stones.length; ++i)
-            union(stones[i][0], ~stones[i][1]);
-        return stones.length - islands;
-    }
-
-    public int find(int x) {
-        if (f.putIfAbsent(x, x) == null)
-            islands++;
-        if (x != f.get(x))
-            f.put(x, find(f.get(x)));
-        return f.get(x);
-    }
-
-    public void union(int x, int y) {
-        x = find(x);
-        y = find(y);
-        if (x != y) {
-            f.put(x, y);
-            islands--;
+        constructAdjList(stones);
+        int max = 0;
+        visited = new boolean[stones.length];
+        for(int i = 0 ; i < stones.length;++i){
+            if(!visited[i]) {
+                visited[i] = true;
+                max += dfs(stones[i],0);
+            }
         }
+        return max;
     }
 }
