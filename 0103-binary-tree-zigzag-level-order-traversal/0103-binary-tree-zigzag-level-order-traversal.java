@@ -19,26 +19,23 @@ class Solution {
         if(root == null)
             return ans;
         
-        build(root, ans, 0);
+        generate(root, ans, 0);
         return ans;
     }
     
-    public void build(TreeNode root, List<List<Integer>> ans, int level){
+    public void generate(TreeNode root, List<List<Integer>> ans, int level){
         if(root == null)
             return;
         
-        if(ans.size() <= level){
-            List<Integer> temp = new ArrayList<>();
-            ans.add(temp);
-        }
+        if(ans.size() == level)
+            ans.add(new ArrayList<>());
         
-        List<Integer> temp = ans.get(level);
-        if(level % 2 == 0)
-            temp.add(root.val);
+        if(level % 2 == 1)
+            ans.get(level).add(0, root.val);
         else
-            temp.add(0, root.val);
+            ans.get(level).add(root.val);
         
-        build(root.left, ans, level + 1);
-        build(root.right, ans, level + 1);
+        generate(root.left, ans, level + 1);
+        generate(root.right, ans, level + 1);
     }
 }
