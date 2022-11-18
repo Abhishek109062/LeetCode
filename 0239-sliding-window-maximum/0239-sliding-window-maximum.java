@@ -12,10 +12,10 @@ class Solution {
                 temp.pollLast();
             
             temp.offer(x);
-            if(x >= k - 1)
+            
+            if(x >= k -1)
                 ans[y++] = nums[temp.peek()];
         }
-        
         return ans;
     }
 }
