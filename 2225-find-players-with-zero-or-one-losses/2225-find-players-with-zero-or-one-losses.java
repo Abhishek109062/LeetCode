@@ -1,40 +1,31 @@
 class Solution {
     public List<List<Integer>> findWinners(int[][] matches) {
+        int[] maintain = new int[100001];
+        int max = 0;
+        
+        for(int[] temp : matches){
+            if(maintain[temp[0]] >= 0)
+                maintain[temp[0]] += 1;
+            
+            if(maintain[temp[1]] >= 0)
+                maintain[temp[1]] = -1;
+            else if(maintain[temp[1]] < 0)
+                maintain[temp[1]] -= 1;
+        }
+        
         List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> temp1 = new ArrayList<>();
+        List<Integer> temp2 = new ArrayList<>();
         
-        ans.add(new ArrayList<>());
-        ans.add(new ArrayList<>());
-        
-        TreeMap<Integer, Integer> map1 = new TreeMap<>();
-        
-        for(int x = 0; x < matches.length; x++){
-            if(map1.containsKey(matches[x][0])){
-                if(map1.get(matches[x][0]) > 0)
-                    map1.put(matches[x][0], map1.get(matches[x][0]) + 1);
-                    
-            }
-            else{
-                map1.put(matches[x][0], 1);
-            }
-            
-            if(map1.containsKey(matches[x][1])){
-                if(map1.get(matches[x][1]) > 0)
-                    map1.put(matches[x][1], -1);
-                else
-                    map1.put(matches[x][1], map1.get(matches[x][1]) - 1);
-            }
-            else{
-                map1.put(matches[x][1], -1);
-            }
-            
+        for(int x = 0; x < 100001; x++){
+            if(maintain[x] > 0)
+                temp1.add(x);
+            else if(maintain[x] == -1)
+                temp2.add(x);
         }
         
-        for(int x: map1.keySet()){
-            if(map1.get(x) > 0)
-                ans.get(0).add(x);
-            else if(map1.get(x) == -1)
-                ans.get(1).add(x);
-        }
+        ans.add(temp1);
+        ans.add(temp2);
         
         return ans;
     }
