@@ -1,23 +1,35 @@
-public class Solution {
+class Solution {
     public String frequencySort(String s) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (char c : s.toCharArray()) 
-            map.put(c, map.getOrDefault(c, 0) + 1);
-						
-        List<Character> [] bucket = new List[s.length() + 1];
-        for (char key : map.keySet()) {
-            int frequency = map.get(key);
-            if (bucket[frequency] == null) bucket[frequency] = new ArrayList<>();
-            bucket[frequency].add(key);
+         Map<Character, Integer> temp = new HashMap<>();
+        
+        for(int x = 0; x < s.length(); x++){
+            temp.put(s.charAt(x), temp.getOrDefault(s.charAt(x), 0) + 1);
         }
-				
-        StringBuilder sb = new StringBuilder();
-        for (int pos = bucket.length - 1; pos >= 0; pos--)
-            if (bucket[pos] != null)
-                for (char c : bucket[pos])
-                    for (int i = 0; i < pos; i++)
-                        sb.append(c);
-
-        return sb.toString();
+        
+        List<Character>[] ans = new List[s.length() + 1];
+        
+        for(char ch : temp.keySet()){
+            int freq = temp.get(ch);
+            
+            if(ans[freq] == null)
+                ans[freq] = new ArrayList<>();
+            
+            ans[freq].add(ch);
+        }
+        
+        int len = s.length();
+        s = "";
+        for(int x = len; x >= 0; x--){
+            if(ans[x] == null)
+                continue;
+            
+            for(char ch: ans[x]){
+                int temp2 = x;
+                while(temp2-- > 0)
+                    s = s + ch;
+            }
+        }
+        // System.out.println(ans);?
+        return s;
     }
 }
