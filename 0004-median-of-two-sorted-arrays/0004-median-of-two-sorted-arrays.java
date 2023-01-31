@@ -29,7 +29,7 @@ class Solution {
             first = nums2[j++];
             median--;
         }
-        System.out.println(first+"\n"+second);
+        // System.out.println(first+"\n"+second);
         if( (n+m) %2 == 0)
             return (first+second)/2.0;
         else
