@@ -66,7 +66,7 @@ class Solution
             }
 
             temp.add(x);
-            while(x - temp.peek() >= k)
+            while(x - temp.peek() > k-1)
             temp.remove();
             
             if(x >= k-1){
